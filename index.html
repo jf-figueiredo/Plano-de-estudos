@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook - Comece Pelo Mais Difícil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+        
+        .intro {
+            background: #f0f4ff;
+            border-left: 4px solid #1e3c72;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .intro h2 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .intro p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .section-header:hover {
+            background: linear-gradient(135deg, #163059 0%, #1e3c72 100%);
+        }
+        
+        .section-header h2 {
+            font-size: 1.5em;
+        }
+        
+        .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+        
+        .section-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .input-group .hint {
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .input-group input[type="text"],
+        .input-group input[type="date"],
+        .input-group input[type="number"],
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+        
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-height: 100px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        .priority-grid {
+            display: grid;
+            grid-template-columns: 60px 1fr 80px 80px;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .priority-header {
+            font-weight: bold;
+            color: #1e3c72;
+            padding: 10px 5px;
+            background: #f0f4ff;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .task-row {
+            display: contents;
+        }
+        
+        .task-row input,
+        .task-row select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        
+        .add-task-btn {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .add-task-btn:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+        }
+        
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item label {
+            cursor: pointer;
+            font-weight: normal;
+        }
+        
+        .area-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .area-card {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .area-card:hover {
+            border-color: #2a5298;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .area-card.selected {
+            border-color: #1e3c72;
+            background: #e3ecff;
+        }
+        
+        .area-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .area-card .title {
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+        
+        .area-card .description {
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            display: block;
+            margin: 10px auto;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+        
+        .score-container {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .score-item label {
+            flex: 1;
+            font-weight: normal;
+        }
+        
+        .score-item input[type="range"] {
+            width: 200px;
+            margin: 0 15px;
+        }
+        
+        .score-value {
+            font-weight: bold;
+            color: #1e3c72;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .tips-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .tips-box h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .tips-box ul {
+            margin-left: 20px;
+        }
+        
+        .tips-box li {
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .progress-indicator {
+            background: #f0f0f0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .section-header {
+                cursor: default;
+                page-break-after: avoid;
+            }
+            
+            .section-content {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+            
+            .save-btn, .download-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐸 Workbook - Comece Pelo Mais Difícil</h1>
+        <p class="subtitle">Um guia prático baseado nos 21 princípios de Brian Tracy</p>
+        
+        <div class="intro">
+            <h2>📖 Como usar este workbook</h2>
+            <p>Este é o seu espaço pessoal para aplicar o método "Comece Pelo Mais Difícil" na sua vida. Reserve um tempo tranquilo para preencher cada seção com honestidade e reflexão.</p>
+            <p><strong>Não precisa preencher tudo de uma vez!</strong> Vá no seu ritmo. O importante é dar o primeiro passo.</p>
+            <p>Seus dados são salvos automaticamente no navegador. Você pode voltar a qualquer momento para continuar.</p>
+        </div>
+
+        <div class="progress-indicator">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- SEÇÃO 1: ESCOLHA SUA ÁREA -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1️⃣ Escolha sua Área de Foco</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content active">
+                <p style="margin-bottom: 20px; color: #666;">Selecione a área da sua vida onde você mais procrastina ou onde precisa de maiores resultados agora:</p>
+                
+                <div class="area-selector">
+                    <div class="area-card" onclick="selectArea(this, 'carreira')">
+                        <div class="icon">💼</div>
+                        <div class="title">Carreira/Trabalho</div>
+                        <div class="description">Projetos, metas profissionais, produtividade</div>
+                    </div>
+                    
+                    <div class="area-card" onclick="selectArea(this, 'estudos')">
+                        <div class="icon">📚</div>
+                        <div class="title">Estudos</div>
+                        <div class="description">Cursos, aprendizado, desenvolvimento</div>
+                    </div>
+                    
+                    <div class="area-card" onclick="selectArea(this, 'saude')">
+                        <div class="icon">💪</div>
+                        <div class="title">Saúde/Fitness</div>
+                        <div class="description">Exercícios, alimentação, bem-estar</div>
+                    </div>
+                    
+                    <div class="area-card" onclick="selectArea(this, 'financas')">
+                        <div class="icon">💰</div>
+                        <div class="title">Finanças</div>
+                        <div class="description">Economia, investimentos, organização</div>
+                    </div>
+                    
+                    <div class="area-card" onclick="selectArea(this, 'relacionamentos')">
+                        <div class="icon">❤️</div>
+                        <div class="title">Relacionamentos</div>
+                        <div class="description">Família, amigos, networking</div>
+                    </div>
+                    
+                    <div class="area-card" onclick="selectArea(this, 'projetos')">
+                        <div class="icon">🎯</div>
+                        <div class="title">Projetos Pessoais</div>
+                        <div class="description">Hobbies, sonhos, criatividade</div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="selectedArea" onchange="saveData()">
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: DEFINA SEU PROPÓSITO -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>2️⃣ Defina seu Propósito (Princípio 1)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="input-group">
+                    <label>Qual é o seu objetivo principal nesta área?</label>
+                    <span class="hint">Seja específico. Ex: "Terminar o curso de Premiere Pro e criar meu primeiro vídeo profissional"</span>
+                    <textarea id="objetivo-principal" placeholder="Escreva aqui seu objetivo..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>Por que este objetivo é importante para você?</label>
+                    <span class="hint">A motivação verdadeira te ajuda a não desistir</span>
+                    <textarea id="motivacao" placeholder="O que isso vai mudar na sua vida?" onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>Prazo para alcançar este objetivo:</label>
+                    <input type="date" id="prazo-objetivo" onchange="saveData()">
+                </div>
+                
+                <div class="tips-box">
+                    <h3>💡 Dica do livro:</h3>
+                    <ul>
+                        <li>"Apenas 3% dos adultos escrevem seus objetivos. Esses costumam realizar de 5 a 10 vezes mais que pessoas que não escrevem."</li>
+                        <li>Passe tudo para o papel. Uma meta não escrita é apenas um desejo.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: LISTE TODAS AS TAREFAS -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>3️⃣ Liste Todas as Suas Tarefas (Princípio 2)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Anote TODAS as tarefas relacionadas ao seu objetivo. Não se preocupe com a ordem ainda - só despeje tudo aqui:</p>
+                
+                <div id="todas-tarefas">
+                    <div class="input-group">
+                        <input type="text" placeholder="Tarefa 1..." onchange="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Tarefa 2..." onchange="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Tarefa 3..." onchange="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Tarefa 4..." onchange="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Tarefa 5..." onchange="saveData()">
+                    </div>
+                </div>
+                
+                <button class="add-task-btn" onclick="addTaskField('todas-tarefas')">+ Adicionar mais tarefas</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: MÉTODO ABCDE -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>4️⃣ Aplique o Método ABCDE (Princípio 6)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Agora organize suas tarefas por prioridade usando o Método ABCDE:</p>
+                
+                <div class="tips-box">
+                    <h3>📋 Como classificar:</h3>
+                    <ul>
+                        <li><strong>A:</strong> Tarefa fundamental. Consequências sérias se não for feita.</li>
+                        <li><strong>B:</strong> Deveria fazer. Consequências leves se não for feita.</li>
+                        <li><strong>C:</strong> Seria bom fazer. Nenhuma consequência se não for feita.</li>
+                        <li><strong>D:</strong> Pode DELEGAR para outra pessoa.</li>
+                        <li><strong>E:</strong> Pode ELIMINAR completamente.</li>
+                    </ul>
+                </div>
+                
+                <div class="priority-grid">
+                    <div class="priority-header">Prioridade</div>
+                    <div class="priority-header">Tarefa</div>
+                    <div class="priority-header">Prazo</div>
+                    <div class="priority-header">Status</div>
+                </div>
+                
+                <div id="tarefas-priorizadas">
+                    <div class="task-row">
+                        <select onchange="saveData()">
+                            <option value="">-</option>
+                            <option value="A-1">A-1</option>
+                            <option value="A-2">A-2</option>
+                            <option value="A-3">A-3</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </select>
+                        <input type="text" placeholder="Descreva a tarefa..." onchange="saveData()">
+                        <input type="date" onchange="saveData()">
+                        <select onchange="saveData()">
+                            <option value="pendente">Pendente</option>
+                            <option value="andamento">Em andamento</option>
+                            <option value="concluida">Concluída</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="add-task-btn" onclick="addPriorityTask()">+ Adicionar tarefa priorizada</button>
+                
+                <div class="tips-box" style="margin-top: 20px; background: #fff3cd; border-color: #ffc107;">
+                    <h3>⚠️ REGRA DE OURO:</h3>
+                    <ul>
+                        <li>Nunca faça uma tarefa B enquanto houver uma tarefa A pendente!</li>
+                        <li>Sua tarefa A-1 é o seu "SAPO" - comece por ela todo dia!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 5: IDENTIFIQUE SEU SAPO -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>5️⃣ Identifique seu SAPO 🐸 (Princípio 3)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Seu "sapo" é a tarefa mais importante e difícil que você precisa fazer AGORA. Aquela que você mais procrastina mas que teria o maior impacto se fosse concluída.</p>
+                
+                <div class="input-group">
+                    <label>🐸 Qual é o seu SAPO atual?</label>
+                    <span class="hint">A tarefa mais importante que, se feita, mudaria tudo</span>
+                    <textarea id="sapo-atual" placeholder="Descreva sua tarefa mais importante..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>Por que você tem procrastinado esta tarefa?</label>
+                    <span class="hint">Seja honesto consigo mesmo</span>
+                    <textarea id="razao-procrastinacao" placeholder="Medo? Complexidade? Falta de clareza?" onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>Qual será o primeiro passo que você vai dar?</label>
+                    <span class="hint">Algo pequeno e concreto que você pode fazer hoje</span>
+                    <input type="text" id="primeiro-passo" placeholder="Ex: Separar os materiais necessários, fazer uma ligação..." onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Quando você vai fazer este primeiro passo?</label>
+                    <input type="datetime-local" id="quando-primeiro-passo" onchange="saveData()">
+                </div>
+                
+                <div class="tips-box">
+                    <h3>💡 Lembre-se:</h3>
+                    <ul>
+                        <li>"Se tiver que comer dois sapos, coma o mais feio primeiro"</li>
+                        <li>Comece pelo mais difícil, e o resto do dia será mais fácil</li>
+                        <li>A satisfação de concluir algo importante energiza você para o resto do dia</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 6: ÁREAS DE RESULTADO-CHAVE -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>6️⃣ Áreas de Resultado-Chave (Princípio 7)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Identifique as 5-7 áreas principais onde você precisa ter resultados para alcançar seu objetivo:</p>
+                
+                <div id="areas-chave">
+                    <div class="input-group">
+                        <label>Área-chave 1:</label>
+                        <input type="text" placeholder="Ex: Dominar edição de vídeo" onchange="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <label>Área-chave 2:</label>
+                        <input type="text" placeholder="Ex: Aprender color grading" onchange="saveData()">
+                    </div>
+                    <div class="input-group">
+                        <label>Área-chave 3:</label>
+                        <input type="text" placeholder="Ex: Criar portfólio" onchange="saveData()">
+                    </div>
+                </div>
+                
+                <button class="add-task-btn" onclick="addTaskField('areas-chave')">+ Adicionar área-chave</button>
+                
+                <div class="score-container" style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 15px; color: #856404;">Dê uma nota de 1 a 10 para seu desempenho em cada área:</h3>
+                    <div id="scores-areas"></div>
+                </div>
+                
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Qual habilidade você precisa desenvolver para melhorar nestas áreas?</label>
+                    <textarea id="habilidade-desenvolver" placeholder="A habilidade que mais impactaria seus resultados..." onchange="saveData()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 7: LEI DAS 3 TAREFAS -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>7️⃣ Lei das Três Tarefas (Princípio 8)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Se você pudesse fazer apenas 3 tarefas o dia inteiro, quais seriam as que mais contribuiriam para seu objetivo?</p>
+                
+                <div class="input-group">
+                    <label>🥇 Tarefa #1 - A MAIS importante:</label>
+                    <span class="hint">Aquela que sozinha representa 90% dos resultados</span>
+                    <textarea id="tarefa-top-1" placeholder="A tarefa que, se fosse a única que você fizesse, já faria diferença..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🥈 Tarefa #2 - Segunda mais importante:</label>
+                    <textarea id="tarefa-top-2" placeholder="A segunda tarefa essencial..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🥉 Tarefa #3 - Terceira mais importante:</label>
+                    <textarea id="tarefa-top-3" placeholder="A terceira tarefa essencial..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="tips-box">
+                    <h3>🎯 Estratégia de Foco:</h3>
+                    <ul>
+                        <li>Essas 3 tarefas representam 90% do valor de sua contribuição</li>
+                        <li>Todo o resto pode ser delegado, terceirizado ou eliminado</li>
+                        <li>Dedique pelo menos 80% do seu tempo nessas 3 tarefas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 8: PLANEJAMENTO DIÁRIO -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>8️⃣ Planejamento Diário (Princípio 2 + 19)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Reserve blocos de tempo específicos para trabalhar em suas tarefas importantes:</p>
+                
+                <div class="input-group">
+                    <label>⏰ Melhor horário para seu trabalho mais importante:</label>
+                    <span class="hint">Quando você tem mais energia e foco?</span>
+                    <select id="horario-peak" onchange="saveData()">
+                        <option value="">Selecione...</option>
+                        <option value="madrugada">Madrugada (4h-7h)</option>
+                        <option value="manha">Manhã (7h-12h)</option>
+                        <option value="tarde">Tarde (12h-18h)</option>
+                        <option value="noite">Noite (18h-22h)</option>
+                        <option value="madrugada-tarde">Madrugada (22h-4h)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>⏱️ Quantas horas por dia você pode dedicar ao seu objetivo?</label>
+                    <input type="number" id="horas-dia" min="0.5" max="24" step="0.5" placeholder="Ex: 2" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>📅 Quais dias da semana você vai trabalhar neste objetivo?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-seg" onchange="saveData()">
+                            <label for="dia-seg">Segunda-feira</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-ter" onchange="saveData()">
+                            <label for="dia-ter">Terça-feira</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-qua" onchange="saveData()">
+                            <label for="dia-qua">Quarta-feira</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-qui" onchange="saveData()">
+                            <label for="dia-qui">Quinta-feira</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-sex" onchange="saveData()">
+                            <label for="dia-sex">Sexta-feira</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-sab" onchange="saveData()">
+                            <label for="dia-sab">Sábado</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dia-dom" onchange="saveData()">
+                            <label for="dia-dom">Domingo</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h3>⚡ Regra dos 90 minutos:</h3>
+                    <ul>
+                        <li>Trabalhe 90 minutos focado, depois faça pausa de 15 minutos</li>
+                        <li>Desligue TUDO: celular, notificações, e-mail</li>
+                        <li>Um período de 90 minutos focado vale mais que 4 horas com interrupções</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 9: ELIMINE OS LADRÕES DE TEMPO -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>9️⃣ Elimine os Ladrões de Tempo (Princípios 15, 16, 17)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Identifique o que rouba seu tempo e tome decisões sobre como lidar com isso:</p>
+                
+                <div class="input-group">
+                    <label>📱 Maiores distrações digitais:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="distracao-email" onchange="saveData()">
+                            <label for="distracao-email">E-mail a todo momento</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="distracao-whatsapp" onchange="saveData()">
+                            <label for="distracao-whatsapp">WhatsApp/Telegram</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="distracao-redes" onchange="saveData()">
+                            <label for="distracao-redes">Redes sociais (Instagram, TikTok, etc.)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="distracao-youtube" onchange="saveData()">
+                            <label for="distracao-youtube">YouTube</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="distracao-noticias" onchange="saveData()">
+                            <label for="distracao-noticias">Sites de notícias</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="distracao-games" onchange="saveData()">
+                            <label for="distracao-games">Jogos</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>🚫 Quais ações você vai tomar para eliminar essas distrações?</label>
+                    <span class="hint">Ex: Desinstalar apps, usar modo avião, bloquear sites...</span>
+                    <textarea id="acoes-distracao" placeholder="Liste suas estratégias..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>⏰ Horários permitidos para checar e-mail/redes sociais:</label>
+                    <span class="hint">Ex: Apenas às 12h e às 18h</span>
+                    <input type="text" id="horarios-check" placeholder="Defina horários específicos..." onchange="saveData()">
+                </div>
+                
+                <div class="tips-box" style="background: #ffebee; border-color: #f44336;">
+                    <h3>⚠️ Regras de Ouro:</h3>
+                    <ul>
+                        <li>NÃO cheque e-mail ou celular logo ao acordar</li>
+                        <li>Trabalhe 90 minutos antes de abrir qualquer rede social</li>
+                        <li>Use modo avião durante trabalho focado</li>
+                        <li>Desative TODAS as notificações durante seu horário de pico</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 10: LIMITAÇÕES E OBSTÁCULOS -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🔟 Identifique suas Limitações (Princípio 12)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">O que está impedindo você de alcançar seu objetivo?</p>
+                
+                <div class="input-group">
+                    <label>🚧 Principal obstáculo INTERNO (dentro de você):</label>
+                    <span class="hint">Ex: Falta de conhecimento, medo, perfeccionismo, preguiça...</span>
+                    <textarea id="obstaculo-interno" placeholder="Seja honesto sobre o que EM VOCÊ está te atrapalhando..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🌍 Principal obstáculo EXTERNO (fora de você):</label>
+                    <span class="hint">Ex: Falta de recursos, pouco tempo, ambiente ruim...</span>
+                    <textarea id="obstaculo-externo" placeholder="O que no AMBIENTE está te impedindo..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>💡 Como você pode superar ou minimizar esses obstáculos?</label>
+                    <textarea id="solucoes-obstaculos" placeholder="Pense em soluções práticas..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="tips-box">
+                    <h3>🎯 Princípio 80/20 aplicado:</h3>
+                    <ul>
+                        <li>80% das limitações são INTERNAS (estão dentro de você)</li>
+                        <li>Apenas 20% são externas</li>
+                        <li>Comece sempre se perguntando: "O que EM MIM está me impedindo?"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 11: PREPARAÇÃO -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1️⃣1️⃣ Prepare-se Minuciosamente (Princípio 9)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">O que você precisa ter pronto ANTES de começar a trabalhar em sua tarefa mais importante?</p>
+                
+                <div class="input-group">
+                    <label>📋 Materiais necessários:</label>
+                    <span class="hint">Ferramentas, softwares, livros, acesso a plataformas...</span>
+                    <textarea id="materiais" placeholder="Liste tudo que você precisa ter à mão..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🧠 Conhecimentos necessários:</label>
+                    <span class="hint">O que você precisa aprender antes?</span>
+                    <textarea id="conhecimentos" placeholder="Cursos, tutoriais, livros que precisa estudar..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>👥 Pessoas que podem ajudar:</label>
+                    <span class="hint">Mentores, colegas, professores...</span>
+                    <textarea id="pessoas-ajuda" placeholder="Quem pode te apoiar nessa jornada..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🏠 Ambiente ideal de trabalho:</label>
+                    <span class="hint">Como deve ser seu espaço para máxima produtividade?</span>
+                    <textarea id="ambiente" placeholder="Descreva o ambiente perfeito para você trabalhar..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="tips-box">
+                    <h3>⚡ Lembre-se:</h3>
+                    <ul>
+                        <li>Cada minuto de preparação economiza 10 minutos de execução</li>
+                        <li>Tenha TUDO à mão antes de começar (para não ter desculpa para parar)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 12: APRIMORAMENTO CONTÍNUO -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1️⃣2️⃣ Aprimore suas Habilidades (Princípio 11)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Como você vai se tornar excelente no que precisa fazer?</p>
+                
+                <div class="input-group">
+                    <label>📚 Livros/Cursos que vai estudar:</label>
+                    <textarea id="recursos-aprendizado" placeholder="Liste recursos específicos..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>⏰ Quanto tempo por dia vai dedicar ao aprendizado?</label>
+                    <input type="number" id="tempo-aprendizado" min="10" max="480" placeholder="Minutos por dia" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🎯 Meta de desenvolvimento para os próximos 30 dias:</label>
+                    <textarea id="meta-30-dias" placeholder="O que você quer ter aprendido/dominado em 1 mês..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="tips-box">
+                    <h3>📖 Regra de 1 hora:</h3>
+                    <ul>
+                        <li>Leia sobre sua área por 1 hora por dia</li>
+                        <li>Isso significa 365 horas por ano = 9 semanas de trabalho em tempo integral!</li>
+                        <li>Em 3 anos você será um especialista na área</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 13: MOTIVAÇÃO E MENTALIDADE -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1️⃣3️⃣ Motive-se a Agir (Princípios 13 + 14)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Como você vai manter a motivação e a autodisciplina?</p>
+                
+                <div class="input-group">
+                    <label>💪 Suas afirmações positivas:</label>
+                    <span class="hint">Repita diariamente. Ex: "Eu sou capaz", "Eu sou disciplinado"</span>
+                    <textarea id="afirmacoes" placeholder="Escreva 3-5 afirmações poderosas sobre você..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🏆 Recompensas ao concluir tarefas importantes:</label>
+                    <span class="hint">Celebre suas vitórias!</span>
+                    <textarea id="recompensas" placeholder="Como você vai se recompensar?" onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>📊 Como você vai medir seu progresso?</label>
+                    <span class="hint">O que você pode acompanhar semanalmente?</span>
+                    <textarea id="metricas-progresso" placeholder="Ex: Horas estudadas, capítulos concluídos, vídeos criados..." onchange="saveData()"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>🔥 Sua frase de força para momentos difíceis:</label>
+                    <span class="hint">Uma frase que te puxa de volta ao foco</span>
+                    <input type="text" id="frase-forca" placeholder='Ex: "Volte ao trabalho!", "Faça isso agora!"' onchange="saveData()">
+                </div>
+                
+                <div class="tips-box">
+                    <h3>🧠 Mentalidade otimista:</h3>
+                    <ul>
+                        <li>Sempre procure o lado bom de cada situação</li>
+                        <li>Procure a lição útil em cada erro/obstáculo</li>
+                        <li>Foque na solução, não no problema</li>
+                        <li>Pense e fale sobre seus objetivos, não seus medos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 14: PLANO DE AÇÃO SEMANAL -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1️⃣4️⃣ Seu Plano de Ação Semanal</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Planeje sua próxima semana em detalhes. Cada dia deve ter seu "sapo":</p>
+                
+                <div class="input-group">
+                    <label>🌅 Segunda-feira - MEU SAPO:</label>
+                    <input type="text" id="segunda-sapo" placeholder="A tarefa mais importante de segunda..." onchange="saveData()">
+                    <input type="time" id="segunda-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🌅 Terça-feira - MEU SAPO:</label>
+                    <input type="text" id="terca-sapo" placeholder="A tarefa mais importante de terça..." onchange="saveData()">
+                    <input type="time" id="terca-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🌅 Quarta-feira - MEU SAPO:</label>
+                    <input type="text" id="quarta-sapo" placeholder="A tarefa mais importante de quarta..." onchange="saveData()">
+                    <input type="time" id="quarta-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🌅 Quinta-feira - MEU SAPO:</label>
+                    <input type="text" id="quinta-sapo" placeholder="A tarefa mais importante de quinta..." onchange="saveData()">
+                    <input type="time" id="quinta-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🌅 Sexta-feira - MEU SAPO:</label>
+                    <input type="text" id="sexta-sapo" placeholder="A tarefa mais importante de sexta..." onchange="saveData()">
+                    <input type="time" id="sexta-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🌅 Sábado - MEU SAPO:</label>
+                    <input type="text" id="sabado-sapo" placeholder="A tarefa mais importante de sábado..." onchange="saveData()">
+                    <input type="time" id="sabado-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🌅 Domingo - MEU SAPO:</label>
+                    <input type="text" id="domingo-sapo" placeholder="A tarefa mais importante de domingo..." onchange="saveData()">
+                    <input type="time" id="domingo-horario" style="margin-top: 10px;" onchange="saveData()">
+                </div>
+                
+                <div class="tips-box" style="background: #e3f2fd; border-color: #2196f3;">
+                    <h3>⏰ Ritual Matinal:</h3>
+                    <ul>
+                        <li>Acorde e NÃO pegue o celular</li>
+                        <li>Revise sua tarefa mais importante do dia</li>
+                        <li>Comece a trabalhar nela IMEDIATAMENTE</li>
+                        <li>Trabalhe 90 minutos focado antes de qualquer distração</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 15: COMPROMISSO FINAL -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1️⃣5️⃣ Seu Compromisso 🤝</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #666;">Faça um compromisso consigo mesmo. Esta é a parte mais importante:</p>
+                
+                <div class="input-group">
+                    <label>✍️ Meu compromisso com meu futuro:</label>
+                    <span class="hint">Escreva como se fosse um contrato consigo mesmo</span>
+                    <textarea id="compromisso" placeholder="Eu, [seu nome], me comprometo a..." onchange="saveData()" style="min-height: 150px;"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>📅 Data de início:</label>
+                    <input type="date" id="data-inicio" onchange="saveData()">
+                </div>
+                
+                <div class="input-group">
+                    <label>🎯 Como será sua vida quando alcançar este objetivo?</label>
+                    <span class="hint">Visualize com detalhes. Como você se sentirá?</span>
+                    <textarea id="visao-futuro" placeholder="Descreva sua vida após conquistar este objetivo..." onchange="saveData()" style="min-height: 150px;"></textarea>
+                </div>
+                
+                <div class="tips-box" style="background: #fff9c4; border-color: #fbc02d;">
+                    <h3>🌟 Lembre-se sempre:</h3>
+                    <ul>
+                        <li>"Você nunca terá tempo suficiente para fazer tudo, mas sempre terá tempo para fazer o mais importante"</li>
+                        <li>"Coma seu sapo pela manhã e o resto do dia será mais fácil"</li>
+                        <li>"O segredo do sucesso é AÇÃO. Faça isso agora!"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <button class="save-btn" onclick="saveData()">💾 Salvar Progresso</button>
+        <button class="download-btn" onclick="downloadPDF()">📥 Baixar como PDF</button>
+        
+        <p style="text-align: center; color: #666; margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 10px;">
+            <strong>🎉 Parabéns por dar este primeiro passo!</strong><br>
+            Agora é hora de AGIR. Escolha uma tarefa e comece HOJE.<br>
+            Lembre-se: "Um passo de cada vez, mas sempre em frente!"
+        </p>
+    </div>
+
+    <script>
+        // Toggle section visibility
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            content.classList.toggle('active');
+            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+            
+            updateProgress();
+        }
+
+        // Select area
+        function selectArea(card, area) {
+            document.querySelectorAll('.area-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            document.getElementById('selectedArea').value = area;
+            saveData();
+        }
+
+        // Add task field
+        function addTaskField(containerId) {
+            const container = document.getElementById(containerId);
+            const newField = document.createElement('div');
+            newField.className = 'input-group';
+            newField.innerHTML = '<input type="text" placeholder="Nova tarefa..." onchange="saveData()">';
+            container.appendChild(newField);
+        }
+
+        // Add priority task
+        function addPriorityTask() {
+            const container = document.getElementById('tarefas-priorizadas');
+            const newRow = document.createElement('div');
+            newRow.className = 'task-row';
+            newRow.innerHTML = `
+                <select onchange="saveData()">
+                    <option value="">-</option>
+                    <option value="A-1">A-1</option>
+                    <option value="A-2">A-2</option>
+                    <option value="A-3">A-3</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                </select>
+                <input type="text" placeholder="Descreva a tarefa..." onchange="saveData()">
+                <input type="date" onchange="saveData()">
+                <select onchange="saveData()">
+                    <option value="pendente">Pendente</option>
+                    <option value="andamento">Em andamento</option>
+                    <option value="concluida">Concluída</option>
+                </select>
+            `;
+            container.appendChild(newRow);
+        }
+
+        // Save all data to localStorage
+        function saveData() {
+            const data = {};
+            
+            // Get all inputs, textareas, and selects
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                if (element.id) {
+                    if (element.type === 'checkbox') {
+                        data[element.id] = element.checked;
+                    } else {
+                        data[element.id] = element.value;
+                    }
+                }
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('workbookData', JSON.stringify(data));
+            
+            // Show save confirmation
+            const saveBtn = document.querySelector('.save-btn');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = '✅ Salvo!';
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+            }, 2000);
+            
+            updateProgress();
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('workbookData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                Object.keys(data).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = data[key];
+                        } else {
+                            element.value = data[key];
+                        }
+                    }
+                });
+                
+                // Restore selected area
+                if (data.selectedArea) {
+                    const cards = document.querySelectorAll('.area-card');
+                    cards.forEach(card => {
+                        if (card.onclick.toString().includes(data.selectedArea)) {
+                            card.classList.add('selected');
+                        }
+                    });
+                }
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            let filled = 0;
+            let total = 0;
+            
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                if (element.type !== 'button' && !element.classList.contains('add-task-btn')) {
+                    total++;
+                    if (element.type === 'checkbox') {
+                        if (element.checked) filled++;
+                    } else if (element.value && element.value.trim() !== '') {
+                        filled++;
+                    }
+                }
+            });
+            
+            const percentage = total > 0 ? Math.round((filled / total) * 100) : 0;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Download as PDF (print)
+        function downloadPDF() {
+            // Expand all sections before printing
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('active');
+            });
+            
+            window.print();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
